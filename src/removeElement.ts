@@ -1,0 +1,1 @@
+console.log('checking ts node setup');
