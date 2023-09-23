@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/two-sum/?envType=study-plan-v2&envId=top-interview-150
-function twoSum(nums: number[], target: number): [number, number][] {
+export function twoSum(nums: number[], target: number): [number, number][] {
   const visited: Record<number, boolean> = {};
   const solns: [number, number][] = [];
   nums.forEach((ele: number) => {
