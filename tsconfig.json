@@ -8,6 +8,7 @@
         "outDir": "dist"
     },
     "lib": [
-        "es2015"
+        "es2015",
+        "ES2021.String",
     ]
 }
