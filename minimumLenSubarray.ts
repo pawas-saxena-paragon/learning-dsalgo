@@ -3,7 +3,6 @@ export function minSubArrayLen(target: number, nums: number[]): number {
     let start = 0;
     let end = 0;
     let sum = 0;
-    //   let minLength = Infinity;
     const minLengths: number[] = [];
   
     while (end <= nums.length - 1) {
