@@ -9,7 +9,7 @@
  * [0 0 0 0]
  * [a 1 1 1]
  * [b 1 2 2]
- *
+ * this is a worng attempt. Here not considered the case when both values (begining chars) are equal
  *
  *
  */
@@ -87,35 +87,6 @@ export function longestCommonSubsequence1(
     : Math.max(...commonSequences.map((seq: string) => seq.length));
 }
 
-export function longestCommonSubsequenceCorrect(
-  text1: string,
-  text2: string
-): number {
-  const m = text1.length;
-  const n = text2.length;
-
-  const dp = new Array(m);
-  for (let i = 0; i < m; i++) {
-    dp[i] = new Array(n).fill(-1);
-  }
-
-  const solve = (a: string, b: string, m: number, n: number) => {
-    if (m === 0 || n === 0) return 0;
-
-    if (dp[m - 1][n - 1] != -1) return dp[m - 1][n - 1];
-
-    if (a[m - 1] === b[n - 1])
-      return (dp[m - 1][n - 1] = 1 + solve(a, b, m - 1, n - 1));
-
-    return (dp[m - 1][n - 1] = Math.max(
-      solve(a, b, m - 1, n),
-      solve(a, b, m, n - 1)
-    ));
-  };
-
-  return solve(text1, text2, text1.length, text2.length);
-}
-
 // acne -> ae,an,ac| acne | ane | ace |
 // sog -> sog | sg | so | og | o | g
 // allSub(st1 prev()) -> prev().map((ele)=> str1 + ele);
@@ -155,4 +126,44 @@ export function findAllSubSequencesMemo(
  */
 export function arrayIntersect(arr1: string[], arr2: string[]): string[] {
   return arr1.filter((char1: string) => arr2.indexOf(char1) > -1);
+}
+
+export function longestCommonSubsequence(text1: string, text2: string) {
+  let m = text1.length;
+  let n = text2.length;
+
+  //NOTE: IMPORTANT This way of making dp array has reference issues and will not work
+  // const innerArr: number[] = Array(n).fill(-1);
+  // const dp: number[][] = Array(m).fill(innerArr);
+
+  const dp = new Array(m);
+  for (let i = 0; i < m; i++) {
+    dp[i] = new Array(n).fill(-1);
+  }
+  return solve1(text1, text2, m, n, dp);
+}
+
+function solve1(
+  text1: string,
+  text2: string,
+  m: number,
+  n: number,
+  dp: number[][]
+): number {
+  if (m === 0 || n === 0) {
+    return 0;
+  }
+
+  if (dp[m - 1][n - 1] !== -1) {
+    return dp[m - 1][n - 1];
+  }
+
+  if (text1[m - 1] === text2[n - 1]) {
+    return (dp[m - 1][n - 1] = 1 + solve1(text1, text2, m - 1, n - 1, dp));
+  }
+
+  return (dp[m - 1][n - 1] = Math.max(
+    solve1(text1, text2, m - 1, n, dp),
+    solve1(text1, text2, m, n - 1, dp)
+  ));
 }

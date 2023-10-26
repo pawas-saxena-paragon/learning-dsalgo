@@ -1,7 +1,7 @@
 import {
   findAllSubSequencesMemo,
   arrayIntersect,
-  longestCommonSubsequenceCorrect as longestCommonSubsequence,
+  longestCommonSubsequence as longestCommonSubsequence,
 } from "./longestCommonSubsequence";
 describe("findAllSubSequencesMemo", () => {
   it("input=a", () => {
