@@ -31,6 +31,19 @@ function solve(
       
     }
   }
+
+  // since we are placing the queen in a row and starting from the first row, the height of the board will decrease
+  // using the height variable we will place the queen in a row in a loop
+  //    we will place the queen in a available column starting from left to right 
+  //    for each col we will check if the col is safe 
+  //    if the col is not safe we move to next col
+  //    if the col is safe we will place the queen in the col and reduce the height and call the solve fn again 
+  //    if the solve fn returns a value I will add the board to the results 
+  //    the board is the shared variable and its value will keep on changing 
+  //    but we are moving one col at a time within a row. We are moving sequentially so it will not be an issue
+  //    I will have to clear the board before proceeding to the next safe column
+  //    If the solve fn returns a  null value then I will backtrack and move to next column. Also clear the board for a height 
+  
 }
 
 /**
