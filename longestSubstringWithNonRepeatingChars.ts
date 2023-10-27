@@ -1,31 +1,56 @@
-function lengthOfLongestSubstring(s: string): number {
-    for(let i=s.length; i>=1; i++){
-        const longestStringSizeI = getLongestNonRepatingStringInWindow(s, i)
-        if(longestStringSizeI){
-            return longestStringSizeI.length;
-        }
+// https://leetcode.com/problems/longest-substring-without-repeating-characters/
+export function lengthOfLongestSubstring(s: string): number {
+  let start = 0;
+  let end = 1;
+  const uniqueSubstrLengths = [];
+  let windowSubstr = s.slice(start, end);
+  let prevStr = windowSubstr;
+  while (end <= s.length) {
+    // move end forward
+    prevStr = windowSubstr;
+    windowSubstr = s.slice(start, end);
+    console.log("outer loop", windowSubstr);
+    const ARE_CHARS_UNIQUE = areCharsUnique(windowSubstr);
+    if (!ARE_CHARS_UNIQUE) {
+      uniqueSubstrLengths.push(prevStr.length);
+      console.log("saving", prevStr);
     }
-    return s.length ? 1 : 0;
 
-};
-
-
-function getLongestNonRepatingStringInWindow(input:string, windowSize: number): string{
-    let maxNonRepatingString: string  = '';
-    // first window
-    let currentNonRepatingString: string  = '';
-    
-
-    for(let i=0; i + windowSize -1 < input.length; i++ ){
-        // currentNonRepatingString = do something;
-        if(currentNonRepatingString.length > maxNonRepatingString.length){
-            maxNonRepatingString = currentNonRepatingString;
-        }
+    while (!areCharsUnique(windowSubstr) && start <= end) {
+      // move start forward
+      start++;
+      prevStr = windowSubstr;
+      windowSubstr = s.slice(start, end);
+      console.log("inside loop", windowSubstr);
     }
-    
-    return maxNonRepatingString;
+    end++;
+  }
+
+  if (areCharsUnique(windowSubstr)) {
+    //saving the unique substring at the last step
+    uniqueSubstrLengths.push(windowSubstr.length);
+    console.log('Saving at last step',  windowSubstr);
+  }
+
+  return uniqueSubstrLengths.length ? Math.max(...uniqueSubstrLengths) : 0;
 }
 
-function checkIfAllCharsAreUnique(str: string): boolean{
-    
+function areCharsUnique(str: string): boolean {
+  if (str.length === 0) {
+    return true;
+  }
+
+  if (str.length === 1) {
+    return true;
+  }
+  const charsSet = new Set();
+
+  for (let char of str) {
+    if (charsSet.has(char)) {
+      return false;
+    }
+    charsSet.add(char);
+  }
+
+  return true;
 }
