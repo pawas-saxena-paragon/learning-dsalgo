@@ -4,9 +4,8 @@ import { MaxHeap } from "./maxHeap";
 export function kthSmallestElement(arr: number[], k: number): number {
   const maxHeap = new MaxHeap();
   for (let i = 0; i < arr.length; i++) {
-    if (maxHeap.size() < k) {
-      maxHeap.insert(arr[i]);
-    } else {
+    maxHeap.insert(arr[i]);
+    if (maxHeap.size() >= k) {
       maxHeap.extractMax();
     }
   }
