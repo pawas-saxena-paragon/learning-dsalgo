@@ -1,13 +1,4 @@
-class TreeNode {
-  val: number;
-  left: TreeNode | null;
-  right: TreeNode | null;
-  constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
-    this.val = val === undefined ? 0 : val;
-    this.left = left === undefined ? null : left;
-    this.right = right === undefined ? null : right;
-  }
-}
+import { TreeNode } from "./binaryTree.util";
 
 function sortedArrayToBST(nums: number[]): TreeNode | null {
   const root = new TreeNode(nums[0]);
@@ -18,7 +9,7 @@ function sortedArrayToBST(nums: number[]): TreeNode | null {
   return root;
 }
 function insertRec(item: number, currentNode: TreeNode): void {
-  if (item > currentNode.key) {
+  if (item > currentNode.val) {
     if (currentNode.right) {
       currentNode.right.insertRec(item);
     } else {
@@ -32,7 +23,6 @@ function insertRec(item: number, currentNode: TreeNode): void {
     }
   }
 }
-
 
 function findLeafBST(node: TreeNode, val: number): TreeNode {
   // traverse to the leaf of binary tree.

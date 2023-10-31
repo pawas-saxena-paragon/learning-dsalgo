@@ -1,4 +1,4 @@
-class TreeNode {
+export class TreeNode {
   key: number;
   left: TreeNode | null;
   right: TreeNode | null;
