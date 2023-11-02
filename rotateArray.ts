@@ -1,5 +1,5 @@
 import { reverse } from "./reverseArray";
-
+// https://leetcode.com/problems/rotate-array/
 export function rotate(nums: number[], k: number): void {
   // for each element
   // new pos is i+k % N, where i is current pos
