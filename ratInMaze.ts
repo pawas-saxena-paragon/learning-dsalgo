@@ -43,7 +43,7 @@ export class RatMaze {
     const nextMoves = this.getNextMoves(x, y);
 
     for (const [nextx, nexty, direction] of nextMoves) {
-    //   const solnSnapshot = [...this.solution];
+      //   const solnSnapshot = [...this.solution];
       this.solution.push(direction);
       if (this.solve(nextx, nexty)) {
         // print soln
@@ -58,13 +58,3 @@ export class RatMaze {
     return false;
   }
 }
-
-const maze1 = [
-  [1, 0, 0, 0],
-  [1, 1, 0, 1],
-  [1, 1, 0, 0],
-  [0, 1, 1, 1],
-];
-const m = new RatMaze(maze1, 4);
-m.solve(0, 0);
-console.log(m.solution);
