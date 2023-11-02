@@ -1,41 +1,39 @@
+// check versions of this file as I have done different solns for this.
 // https://leetcode.com/problems/generate-parentheses/
 // https://youtu.be/eyCj_u3PoJE?si=uVMtTq4L9SfIL7r_
 export function generateParenthesis(n: number): string[] {
-  return solve(n, n, n);
+  // open parenthesis are fine
+  // at any time if close parenthesis are more than open at any point in a partial string , then the string is invalid
+
+  const p = new Parenthesis(n);
+  p.solve(n, n, "");
+
+  return p.solution;
 }
 
-function solve(
-  unUsedOpen: number,
-  unUsedClosed: number,
-  total: number
-): string[] {
-  if (unUsedClosed === 1 && unUsedOpen === 1) {
-    return ["()"];
+class Parenthesis {
+  solution: string[];
+  constructor(private n: number) {
+    this.solution = [];
   }
 
-  if (unUsedClosed === 0 && unUsedOpen > 0) {
-    return [Array(unUsedOpen).fill("(").join("")];
-  }
-  if (unUsedOpen === 0 && unUsedClosed > 0) {
-    return [Array(unUsedClosed).fill(")").join("")];
-  }
+  solve(open: number, closed: number, patternUsedTillNow: string): void {
+    if (open === 0) {
+      // no more choice use all closed
+      while (closed !== 0) {
+        patternUsedTillNow += ")";
+        closed--;
+      }
+      this.solution.push(patternUsedTillNow);
+      return;
+    }
 
-  // choose open
-  const chooseOpen = [
-    ...solve(unUsedOpen - 1, unUsedClosed, total).map(
-      (char: string) => "(" + char
-    ),
-  ];
+    if (open > closed) {
+      // break
+      return;
+    }
 
-  let chooseClosed = [];
-  if (unUsedClosed > unUsedOpen) {
-    // if more close are available than availableOpen proceed further
-    chooseClosed = [
-      ...solve(unUsedOpen, unUsedClosed - 1, total).map(
-        (char: string) => ")" + char
-      ),
-    ];
+    this.solve(open - 1, closed, patternUsedTillNow + "(");
+    this.solve(open, closed - 1, patternUsedTillNow + ")");
   }
-
-  return [...chooseOpen, ...chooseClosed];
 }
