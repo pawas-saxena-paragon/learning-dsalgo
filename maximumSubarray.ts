@@ -1,6 +1,6 @@
 // kadane's algorithm
 // chat gpt code
-
+// https://leetcode.com/problems/maximum-subarray/submissions/?envType=study-plan-v2&envId=top-interview-150
 function findMaxSubarraySum(arr) {
   let maxSum = -Infinity;
   let currentSum = -Infinity;
