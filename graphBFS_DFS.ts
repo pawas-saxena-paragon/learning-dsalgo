@@ -49,6 +49,7 @@ class Graph {
   DFS(startVertex: number): number[] {
     const output: number[] = [];
     let traversalStack: number[] = [];
+    // output can also be used as visited I believe.
     const visited: boolean[] = Array(this.allVertex.length).fill(false);
     let last = startVertex;
 
