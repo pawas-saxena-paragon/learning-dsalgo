@@ -1,3 +1,4 @@
+// https://leetcode.com/problems/combinations/?envType=study-plan-v2&envId=top-interview-150
 //comeback to this problem later Was not able to understand it.
 function combine(n: number, k: number): number[][] {
   if (k === 1) {
@@ -71,3 +72,51 @@ using recursion
 pick one number 's1' now since this one is selected perform selctions for k-1 and remove s1 from the available numbers also.
 when k = 1  then selection is each number 1 times
 */
+
+
+
+function combine3(n: number, k: number): number[][] {
+    const c = new Combine(n, k);
+    c.solve(n);
+
+    return c.solution;
+};
+
+
+class Combine {
+  solution: number[][] = [];
+  constructor(private n: number, private k: number){
+
+  }
+
+  boundingFn(){
+
+  }
+
+
+  getNextMoves(n,k){
+
+  }
+
+
+  solve(n: number): void{
+    // select first k numbers
+    // [1 to k]
+    if(n === this.k){
+      this.solution.push([...Array(this.k).fill(0).map((_ele, index)=> index + 1)]);
+      return 
+    }
+
+    if(this.boundingFn(n)){
+      return;
+    }
+
+    while(){
+      for(let move of this.getNextMoves(n)){
+        this.solve(n-1);
+      }
+    }
+
+
+  }
+}
