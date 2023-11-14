@@ -5,7 +5,6 @@ function solve(board: string[][]): void {
 }
 
 class SurroundedRegions {
-  isEdgeRegion: boolean;
   constructor(private board: string[][]) {}
 
   dfs(x: number, y: number) {
@@ -19,18 +18,7 @@ class SurroundedRegions {
       return;
     }
 
-    const isEdgeNode =
-      x === 0 ||
-      x === this.board.length - 1 ||
-      y === 0 ||
-      y === this.board[0].length;
-    if (isEdgeNode) {
-      this.isEdgeRegion = true;
-    }
-
-    if (!this.isEdgeRegion) {
-      this.board[x][y] = "#";
-    }
+    this.board[x][y] = "#";
 
     this.dfs(x + 1, y);
     this.dfs(x - 1, y);
@@ -39,19 +27,43 @@ class SurroundedRegions {
   }
 
   solve() {
-    for (let i = 0; i < this.board.length; i++) {
-      for (let j = 0; j < this.board[0].length; j++) {
-        if (this.board[i][j] === "O") {
-          this.dfs(i, j);
-          this.isEdgeRegion = false;
-        }
+    const nRows = this.board.length;
+    const nColumns = this.board[0].length;
+    // traverse all edge lying regions
+    for (let j = 0; j < nColumns; j++) {
+      // 0th row
+      if (this.board[0][j] === "O") {
+        this.dfs(0, j);
+      }
+
+      // last row
+      if (this.board[nRows - 1][j] === "O") {
+        this.dfs(nRows - 1, j);
       }
     }
 
-    for (let i = 0; i < this.board.length; i++) {
-      for (let j = 0; j < this.board[0].length; j++) {
-        if (this.board[i][j] === "#") {
+    for (let i = 0; i < nRows; i++) {
+      // 0 th column
+      if (this.board[i][0] === "O") {
+        this.dfs(i, 0);
+      }
+
+      // last column
+      if (this.board[i][nColumns - 1] === "O") {
+        this.dfs(i, nColumns - 1);
+      }
+    }
+
+    // another traversal is not required
+
+    for (let i = 0; i < nRows; i++) {
+      for (let j = 0; j < nColumns; j++) {
+        if (this.board[i][j] === "O") {
           this.board[i][j] = "X";
+        }
+
+        if (this.board[i][j] === "#") {
+          this.board[i][j] = "O";
         }
       }
     }
