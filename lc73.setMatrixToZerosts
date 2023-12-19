@@ -1,0 +1,41 @@
+// https://leetcode.com/problems/set-matrix-zeroes/?envType=study-plan-v2&envId=top-interview-150
+function setZeroes(matrix: number[][]): void {
+  const nRows = matrix.length;
+  const nCols = matrix[0].length;
+  const toZeroRows = new Set<number>();
+  const toZeroCols = new Set<number>();
+  for (let i = 0; i < nRows; i++) {
+    for (let j = 0; j < nCols; j++) {
+      if (matrix[i][j] === 0) {
+        toZeroRows.add(i);
+        toZeroCols.add(j);
+      }
+    }
+  }
+
+  // x for columns
+  for (let iRow of toZeroRows) {
+    for (let i = 0; i < nCols; i++) {
+      matrix[iRow][i] = 0;
+    }
+  }
+
+  // y for row
+  for (let iCol of toZeroCols) {
+    for (let i = 0; i < nRows; i++) {
+      matrix[i][iCol] = 0;
+    }
+  }
+}
+
+
+/**\
+ * [
+ *  [a,b,f]
+ *  [c,d,l]
+ * ]
+ * 
+ * 
+ * 
+ */
+
