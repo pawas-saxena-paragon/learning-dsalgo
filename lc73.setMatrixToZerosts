@@ -13,14 +13,12 @@ function setZeroes(matrix: number[][]): void {
     }
   }
 
-  // x for columns
   for (let iRow of toZeroRows) {
     for (let i = 0; i < nCols; i++) {
       matrix[iRow][i] = 0;
     }
   }
 
-  // y for row
   for (let iCol of toZeroCols) {
     for (let i = 0; i < nRows; i++) {
       matrix[i][iCol] = 0;
