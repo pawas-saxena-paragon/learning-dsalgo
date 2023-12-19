@@ -1,38 +1,22 @@
 // https://leetcode.com/problems/group-anagrams/?envType=study-plan-v2&envId=top-interview-150
 function groupAnagrams(strs: string[]): string[][] {
-  const result = strs.reduce((prev: string[][], curr: string) => {
-    const anagramMatchIndex = prev.findIndex((ele: string[]) =>
-      areAnagrams(ele[0], curr)
-    );
-    if (anagramMatchIndex > -1) {
-      prev[anagramMatchIndex].push(curr);
+  const anagrams: Record<string, string[]> = {};
+  
+  for (let i = 0; i < strs.length; i++) {
+    let curr = strs[i];
+    const currSorted = sortString(curr);
+    if (anagrams[currSorted]) {
+      anagrams[currSorted].push(curr);
     } else {
-      prev.push([curr]);
+      anagrams[currSorted] = [curr];
     }
+  }
 
-    return prev;
-  }, [] as string[][]);
-
-  return result;
+  return Object.values(anagrams);
 }
 
-function areAnagrams(str1: string, str2: string): boolean {
-  if (str1.length !== str2.length) {
-    return false;
-  } else {
-    const frequency = {};
-    for (let i = 0; i < str1.length; i++) {
-      frequency[str1.charAt(i)] = frequency[str1.charAt(i)]
-        ? frequency[str1.charAt(i)] + 1
-        : 1;
-
-      frequency[str2.charAt(i)] = frequency[str2.charAt(i)]
-        ? frequency[str2.charAt(i)] - 1
-        : -1;
-    }
-
-    return Object.values(frequency).every((ele) => ele === 0);
-  }
+function sortString(str: string): string {
+  return str.split("").sort().join("");
 }
 
 // sort all strings and compare to group them
