@@ -41,7 +41,7 @@ export class Solution {
       // skip current element
       const sol = new Solution();
 
-      this.results.push(
+      this.results.push(  
         numArr[0] +
           sol.findMaximumNum(this.numArrToString(numArr.slice(1)), k - 1)
       );
