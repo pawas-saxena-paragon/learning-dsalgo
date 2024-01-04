@@ -17,9 +17,6 @@ function bfs(root: TreeNode): TreeNode[][] {
   while (toVist.length !== 0) {
     let { node: currentTreeNode, level } = toVist.shift();
     resultWithLevels.push({ node: currentTreeNode, level });
-    // if (currentTreeNode === null) {
-    //   continue;
-    // }
     if (currentTreeNode.left !== null) {
       toVist.push({ node: currentTreeNode.left, level: level + 1 });
     }
@@ -40,6 +37,36 @@ function bfs(root: TreeNode): TreeNode[][] {
     },
     [] as TreeNode[][]
   );
+}
+
+function rightSideViewRec(root: TreeNode): number[] {
+  const result: TreeNode[][] = [];
+
+  bfsRec(root, 0, result);
+
+  return result.map(
+    (levelArr: TreeNode[]) => levelArr[levelArr.length - 1].val
+  );
+}
+
+function bfsRec(root: TreeNode, level: number, result: TreeNode[][]): void {
+  if (root === null) {
+    return;
+  }
+
+  // add root to the result arr
+  if (result[level]) {
+    result[level].push(root);
+  } else {
+    result[level] = [root];
+  }
+
+  if (root.left !== null) {
+    bfsRec(root.left, level + 1, result);
+  }
+  if (root.right !== null) {
+    bfsRec(root.right, level + 1, result);
+  }
 }
 
 /**

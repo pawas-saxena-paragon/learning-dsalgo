@@ -39,3 +39,28 @@ function bfs(root: TreeNode): TreeNode[][] {
     [] as TreeNode[][]
   );
 }
+
+function levelTraverse(root: TreeNode): TreeNode[][] {
+  const result: TreeNode[][] = [];
+  bfsRec(root, 0, result);
+  return result;
+}
+
+function bfsRec(root: TreeNode, level: number, result: TreeNode[][]): void {
+  if (root === null) {
+    return;
+  }
+
+  // add root to the result arr
+  if (result[level]) {
+    result[level].push(root);
+  } else {
+    result[level] = [root];
+  }
+
+  if (root.left !== null) {
+    bfsRec(root.left, level + 1, result);
+  } else if (root.right !== null) {
+    bfsRec(root.right, level + 1, result);
+  }
+}
