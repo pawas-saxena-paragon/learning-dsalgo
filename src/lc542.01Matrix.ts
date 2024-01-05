@@ -1,171 +1,101 @@
 // https://leetcode.com/problems/01-matrix/
 type Point = [number, number];
 type PointLevel = [number, number, number];
-const directions: Point[] = [
-  [0, 1],
-  [0, -1],
-  [1, 0],
-  [-1, 0],
-];
 
 export function updateMatrix(mat: number[][]): number[][] {
-  const nRow = mat.length;
-  const nCol = mat[0].length;
+  const sol = new Solution(mat);
+  console.log("Result", sol.result);
+  return sol.result;
+}
 
-  // initalize result matrix
-  const resultMat: number[][] = Array(nRow).fill(null);
-  for (let i = 0; i < nRow; i++) {
-    const colMat = Array(nCol).fill(null);
-    resultMat[i] = colMat;
+class Solution {
+  result: number[][];
+  visited: boolean[][];
+  nRow: number;
+  nCol: number;
+  directions: Point[];
+
+  constructor(private inputMat: number[][]) {
+    this.nRow = this.inputMat.length;
+    this.nCol = this.inputMat[0].length;
+    this.directions = [
+      [0, 1],
+      [0, -1],
+      [1, 0],
+      [-1, 0],
+    ];
+    this.initVisited();
+    this.initResult();
+    this.solve();
   }
 
-  for (let i = 0; i < nRow; i++) {
-    for (let j = 0; j < nCol; j++) {
-      if (mat[i][j] === 0) {
-        resultMat[i][j] = 0;
+  initResult() {
+    this.result = Array(this.nRow).fill(null);
+    for (let i = 0; i < this.nRow; i++) {
+      const colMat = Array(this.nCol).fill(null);
+      for (let j = 0; j < this.nCol; j++) {
+        colMat[j] = this.inputMat[i][j] === 0 ? 0 : null;
+      }
+      this.result[i] = colMat;
+    }
+  }
+
+  initVisited() {
+    this.visited = Array(this.nRow).fill(null);
+    for (let i = 0; i < this.nRow; i++) {
+      const colMat: boolean[] = Array(this.nCol).fill(false);
+      for (let j = 0; j < this.nCol; j++) {
+        colMat[j] = Boolean(this.inputMat[i][j] === 0);
+      }
+      this.visited[i] = colMat;
+    }
+  }
+
+  solve() {
+    for (let i = 0; i < this.nRow; i++) {
+      for (let j = 0; j < this.nCol; j++) {
+        if (this.inputMat[i][j] === 0) {
+          this.bfs(i, j, 0);
+        }
       }
     }
   }
 
-  for (let i = 0; i < nRow; i++) {
-    for (let j = 0; j < nCol; j++) {
-      if (resultMat[i][j] === null) {
-        // set for each element as start
-        // bfs({
-        //   point: [i, j],
-        //   resultMat,
-        //   nRow,
-        //   nCol,
-        //   inputMat: mat,
-        // });
+  bfs(starti: number, startj: number, startLevel: number): void {
+    const toVisitNext: PointLevel[] = [[starti, startj, startLevel]];
+    while (toVisitNext.length !== 0) {
+      const [i, j, currentLevel] = toVisitNext.shift();
+      this.visited[i][j] = true;
 
-        bfsRec({ point: [i, j, 0], resultMat, nRow, nCol });
+      if (this.inputMat[i][j] === 1) {
+        this.result[i][j] = currentLevel;
       }
+
+      const nextNodes = this.getNext(i, j, currentLevel);
+      console.log(`tovisit ${i}: ${j}:`, nextNodes);
+      toVisitNext.push(...nextNodes);
     }
   }
 
-  console.log("result mat", resultMat);
-
-  return resultMat;
-}
-
-function bfs({
-  point,
-  resultMat,
-  nRow,
-  nCol,
-  inputMat,
-}: {
-  point: Point;
-  resultMat: number[][];
-  nRow: number;
-  nCol: number;
-  inputMat: number[][];
-}): void {
-  const [starti, startj] = point;
-  const toVisitNext: PointLevel[] = [[starti, startj, 0]];
-  const visited: Point[] = [[starti, startj]];
-  while (toVisitNext.length !== 0) {
-    const currentNode: PointLevel = toVisitNext.shift();
-    const [i, j, currentLevel] = currentNode;
-
-    if (isOutOfBound(i, j, nRow, nCol)) {
-      continue;
-    }
-
-    //visit current element
-    if (inputMat[i][j] === 0) {
-      resultMat[i][j] = currentLevel;
-      return;
-    }
-
-    if (resultMat[i][j] !== null) {
-      resultMat[starti][startj] = currentLevel + resultMat[i][j];
-      return;
-    }
-
-    const neighbourElements: PointLevel[] = getNextElements({
-      i,
-      j,
-      currentLevel,
-      nCol,
-      nRow,
-    }).filter(([i, j]: PointLevel) => visited.includes([i, j]) === false);
-
-    toVisitNext.push(...neighbourElements);
-  }
-}
-
-function bfsRec({
-  point,
-  resultMat,
-  nRow,
-  nCol,
-}: {
-  point: PointLevel;
-  resultMat: number[][];
-  nRow: number;
-  nCol: number;
-}) {
-  const [i, j, level] = point;
-  if (resultMat[i][j] !== null) {
-    return;
-  }
-  if (isOutOfBound(i, j, nRow, nCol)) {
-    return;
+  getNext(i: number, j: number, level: number): PointLevel[] {
+    return this.directions
+      .map(([diri, dirj]: Point) => {
+        const nextPoint: PointLevel = [
+          diri + i,
+          dirj + j,
+          this.inputMat[i][j] === 0 ? 0 : level + 1,
+        ];
+        return nextPoint;
+      })
+      .filter(([i, j]: PointLevel) => !this.isOutOfBound(i, j))
+      .filter(([i, j]: PointLevel) => !this.visited[i][j]);
   }
 
-  if (resultMat[i][j] === 0) {
-    const [starti, startj] = point;
-    resultMat[starti][startj] = level;
-    return;
+  isOutOfBound(i: number, j: number): boolean {
+    const isOutOfBoundXDir = j < 0 || j >= this.nCol;
+    const isOutOfBoundYDir = i < 0 || i >= this.nRow;
+    return Boolean(isOutOfBoundXDir || isOutOfBoundYDir);
   }
-
-  const nextElemets = getNextElements({
-    i,
-    j,
-    currentLevel: level,
-    nCol,
-    nRow,
-  });
-
-  nextElemets.forEach(([i, j, currentlevel]: PointLevel) => {
-    bfsRec({ point: [i, j, currentlevel + 1], resultMat, nRow, nCol });
-  });
-}
-
-function isOutOfBound(
-  i: number,
-  j: number,
-  nRow: number,
-  nCol: number
-): boolean {
-  const isOutOfBoundXDir = j < 0 || j >= nCol;
-  const isOutOfBoundYDir = i < 0 || i >= nRow;
-  return Boolean(isOutOfBoundXDir || isOutOfBoundYDir);
-}
-
-function getNextElements({
-  i,
-  j,
-  currentLevel,
-  nCol,
-  nRow,
-}: {
-  i: number;
-  j: number;
-  currentLevel: number;
-  nRow: number;
-  nCol: number;
-}): PointLevel[] {
-  return directions
-    .map(([diri, dirj]: Point) => {
-      const nextEle: PointLevel = [diri + i, dirj + j, currentLevel + 1];
-      return nextEle;
-    })
-    .filter(([i, j]: PointLevel) => {
-      return isOutOfBound(i, j, nRow, nCol) === false;
-    });
 }
 
 /**
