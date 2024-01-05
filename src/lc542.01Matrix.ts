@@ -10,7 +10,7 @@ export function updateMatrix(mat: number[][]): number[][] {
 
 class Solution {
   result: number[][];
-  visited: boolean[][];
+  toVisit: PointLevel[];
   nRow: number;
   nCol: number;
   directions: Point[];
@@ -24,6 +24,8 @@ class Solution {
       [1, 0],
       [-1, 0],
     ];
+    this.toVisit = [];
+    this.addZerosToVisit();
     this.initResult();
     this.solve();
   }
@@ -39,69 +41,54 @@ class Solution {
     }
   }
 
-  initVisited() {
-    this.visited = Array(this.nRow).fill(null);
+  addZerosToVisit() {
     for (let i = 0; i < this.nRow; i++) {
-      const colMat: boolean[] = Array(this.nCol).fill(false);
       for (let j = 0; j < this.nCol; j++) {
-        colMat[j] = Boolean(this.inputMat[i][j] === 0);
+        if (this.inputMat[i][j] === 0) {
+          this.toVisit.push([i, j, 0]);
+        }
       }
-      this.visited[i] = colMat;
     }
   }
 
   solve() {
-    for (let i = 0; i < this.nRow; i++) {
-      for (let j = 0; j < this.nCol; j++) {
-        if (this.inputMat[i][j] === 0) {
-          this.initVisited();
-          this.bfs(i, j, 0);
-        }
-      }
-    }
+    this.bfs();
   }
 
-  bfs(starti: number, startj: number, startLevel: number): void {
-    const toVisitNext: PointLevel[] = [[starti, startj, startLevel]];
-    while (toVisitNext.length !== 0) {
-      const [i, j, currentLevel] = toVisitNext.shift();
-      this.visited[i][j] = true;
+  bfs(): void {
+    while (this.toVisit.length !== 0) {
+      const [i, j, currentLevel] = this.toVisit.shift();
+      // this.result[i][j] = true;
 
       if (this.inputMat[i][j] === 1) {
-        if (this.result[i][j] !== null) {
-          this.result[i][j] = Math.min(this.result[i][j], currentLevel + 1);
-        } else {
-          this.result[i][j] = currentLevel + 1; // when coming from 0 and encountering a 1 we should increase it by 1
-        }
+        this.result[i][j] = currentLevel; // when coming from 0 and encountering a 1 we should increase it by 1
         // return;
         // by adding a return here , code will not be able to reach 1 nodes that are surrounded by 1 in all directions
       }
 
       const nextNodes = this.getNext(i, j, currentLevel);
       // the order of ${i} ${j} in this log tell the order of traversal in graph
-      console.log(
-        `tovisit ${i}: ${j}:`,
-        nextNodes,
-        "resultTillNow",
-        this.result
-      );
+      // console.log(
+      //   `tovisit ${i}: ${j}:`,
+      //   nextNodes,
+      //   "resultTillNow",
+      //   this.result
+      // );
 
-      toVisitNext.push(...nextNodes);
+      this.toVisit.push(...nextNodes);
     }
   }
 
   getNext(i: number, j: number, prevLevel: number): PointLevel[] {
     return this.directions
-      .map(([diri, dirj]: Point) => {
-        const nextPoint: PointLevel = [
-          diri + i,
-          dirj + j,
-          this.inputMat[i][j] === 0 ? 0 : prevLevel + 1,
-        ];
-        return nextPoint;
-      })
-      .filter(([i, j]: PointLevel) => !this.isOutOfBound(i, j))
-      .filter(([i, j]: PointLevel) => !this.visited[i][j]);
+      .map(([diri, dirj]: Point) => [diri + i, dirj + j] )
+      .filter(([i, j]: Point) => !this.isOutOfBound(i, j))
+      .filter(([i, j]: Point) => this.result[i][j] === null)
+      .map(([nexti, nextj]: Point) => [
+        nexti,
+        nextj,
+        this.inputMat[nexti][nextj] === 0 ? 0 : prevLevel + 1,
+      ]);
   }
 
   isOutOfBound(i: number, j: number): boolean {
