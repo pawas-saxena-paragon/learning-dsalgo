@@ -24,7 +24,6 @@ class Solution {
       [1, 0],
       [-1, 0],
     ];
-    this.initVisited();
     this.initResult();
     this.solve();
   }
@@ -55,6 +54,7 @@ class Solution {
     for (let i = 0; i < this.nRow; i++) {
       for (let j = 0; j < this.nCol; j++) {
         if (this.inputMat[i][j] === 0) {
+          this.initVisited();
           this.bfs(i, j, 0);
         }
       }
@@ -68,22 +68,35 @@ class Solution {
       this.visited[i][j] = true;
 
       if (this.inputMat[i][j] === 1) {
-        this.result[i][j] = currentLevel;
+        if (this.result[i][j] !== null) {
+          this.result[i][j] = Math.min(this.result[i][j], currentLevel + 1);
+        } else {
+          this.result[i][j] = currentLevel + 1; // when coming from 0 and encountering a 1 we should increase it by 1
+        }
+        // return;
+        // by adding a return here , code will not be able to reach 1 nodes that are surrounded by 1 in all directions
       }
 
       const nextNodes = this.getNext(i, j, currentLevel);
-      console.log(`tovisit ${i}: ${j}:`, nextNodes);
+      // the order of ${i} ${j} in this log tell the order of traversal in graph
+      console.log(
+        `tovisit ${i}: ${j}:`,
+        nextNodes,
+        "resultTillNow",
+        this.result
+      );
+
       toVisitNext.push(...nextNodes);
     }
   }
 
-  getNext(i: number, j: number, level: number): PointLevel[] {
+  getNext(i: number, j: number, prevLevel: number): PointLevel[] {
     return this.directions
       .map(([diri, dirj]: Point) => {
         const nextPoint: PointLevel = [
           diri + i,
           dirj + j,
-          this.inputMat[i][j] === 0 ? 0 : level + 1,
+          this.inputMat[i][j] === 0 ? 0 : prevLevel + 1,
         ];
         return nextPoint;
       })
