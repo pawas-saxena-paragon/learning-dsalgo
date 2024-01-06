@@ -34,6 +34,6 @@ describe("simplifyPath", () => {
   });
 
   it("/a/./b/../../c/", () => {
-    expect(simplifyPath("/a/./b/../../c/")).toEqual("/");
+    expect(simplifyPath("/a/./b/../../c/")).toEqual("/c");
   });
 });

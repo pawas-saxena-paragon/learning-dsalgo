@@ -6,21 +6,11 @@ export function simplifyPath(path: string): string {
     .filter((dir: string) => dir !== ".");
 
   let result = [];
-  let elementsToPop = 0;
-  while (elements.length !== 0) {
-    const lastDir = elements[elements.length - 1];
-    if (lastDir === "..") {
-      elementsToPop++;
-      elements.pop();
-      // pop
+  for (let dir of elements) {
+    if (dir === "..") {
+      result.length && result.pop();
     } else {
-      // make elementsToPop 0
-      while (elementsToPop > 0) {
-        elements.pop();
-        elementsToPop--;
-      }
-      const lastEle = elements.pop();
-      result.unshift(lastEle);
+      result.push(dir);
     }
   }
   return "/" + result.join("/");
