@@ -1,7 +1,7 @@
-import { maxProfitBruteForce as maxProfit } from "./bestTimeToSellStock";
+import { maxProfit } from "./lc121.bestTimeToSellStock";
 
 describe("best time to sell stock", () => {
-  it(" prices = [7,1,5,3,6,4]", () => {
+  it("prices = [7,1,5,3,6,4]", () => {
     expect(maxProfit([7, 1, 5, 3, 6, 4])).toEqual(5);
   });
 
