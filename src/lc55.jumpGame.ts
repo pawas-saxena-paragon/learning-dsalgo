@@ -23,3 +23,6 @@ export function canJump(nums: number[]): boolean {
 // 2
 
 // if you can reach lastIndex from a source then you can also reach any index less than the lastIndex
+
+//----------------- Attempt2
+
