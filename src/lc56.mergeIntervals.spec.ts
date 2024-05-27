@@ -1,19 +1,58 @@
-import { checkOverlap } from "./lc56.mergeIntervals";
+import { merge } from "./lc56.mergeIntervals";
 
 describe("merge intervals", () => {
-  it("checkOverlap 1", () => {
-    expect(checkOverlap([[1, 6]], [8, 10])).toEqual(null);
+  it("[[1,3],[2,6],[8,10],[15,18]]", () => {
+    expect(
+      merge([
+        [1, 3],
+        [2, 6],
+        [8, 10],
+        [15, 18],
+      ])
+    ).toEqual([
+      [1, 6],
+      [8, 10],
+      [15, 18],
+    ]);
   });
 
-  it("checkOverlap 2", () => {
-    expect(checkOverlap([[1, 6]], [0, 1])).toEqual(0);
+  it("[[1,4],[4,5]]", () => {
+    expect(
+      merge([
+        [1, 4],
+        [4, 5],
+      ])
+    ).toEqual([[1, 5]]);
   });
 
-  it("checkOverlap 3", () => {
-    expect(checkOverlap([[1, 6]], [0, 0])).toEqual(null);
+  it("[[1,4],[0,4]]", () => {
+    expect(
+      merge([
+        [1, 4],
+        [0, 4],
+      ])
+    ).toEqual([[0, 4]]);
   });
 
-  it("checkOverlap 4", () => {
-    expect(checkOverlap([[1, 6]], [5, 10])).toEqual(0);
+  it("[[1,4],[0,2],[3,5]]", () => {
+    expect(
+      merge([
+        [1, 4],
+        [0, 2],
+        [3, 5],
+      ])
+    ).toEqual([[0, 5]]);
+  });
+
+  it("[[2,3],[4,5],[6,7],[8,9],[1,10]]", () => {
+    expect(
+      merge([
+        [2, 3],
+        [4, 5],
+        [6, 7],
+        [8, 9],
+        [1, 10],
+      ])
+    ).toEqual([[1, 10]]);
   });
 });

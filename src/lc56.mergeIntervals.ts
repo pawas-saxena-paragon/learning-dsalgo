@@ -1,55 +1,36 @@
-function merge(intervals: number[][]): number[][] {
-  let results = [];
-  for (let i = 0; i < intervals.length; i++) {
-    const [iStart, iEnd] = intervals[i];
-    const overLappingIndex = checkOverlap(results, [iStart, iEnd]);
-    if (overLappingIndex !== null) {
-      mergeSingleInterval([iStart, iEnd], overLappingIndex);
-    } else {
-      results.push([iStart, iEnd]);
-    }
-  }
-  return results;
+// https://leetcode.com/problems/merge-intervals/?envType=study-plan-v2&envId=top-interview-150
+export function merge(intervals: [number, number][]): [number, number][] {
+  return mergeRec(intervals);
+}
 
-  function mergeSingleInterval(
-    [start, end]: [number, number],
-    index: number
-  ): void {
-    const [curStart, curEnd] = results[index];
-    const newInterval = [Math.min(curStart, start), Math.max(curEnd, end)];
-    results[index] = newInterval;
+/**
+ * merge rec wont work . if any 2 are merged then it can lead to cascade of merges. 
+ * the rec approach assumes that the cascade can only happen left to right. 
+ * at each recursive step we are losing elements in the case of no overlap i.e. current and next
+ * Also we cannot gurantee that the problem size reduces at each step
+ */
+function mergeRec(intervals: [number, number][]): [number, number][] {
+  if (intervals.length <= 1) {
+    return intervals;
+  }
+  const current = intervals.shift();
+  const next = intervals.shift();
+
+  if (intervalOverlap(current, next)) {
+    const combinedElement: [number, number] = [
+      Math.min(current[0], next[0]),
+      Math.max(next[1], current[1]),
+    ];
+    intervals.unshift(combinedElement);
+    return mergeRec(intervals);
+  } else {
+    return [current, next, ...mergeRec(intervals)];
   }
 }
 
-export function checkOverlap(arr: number[][], [start, end]: [number, number]) {
-  const overlappingIntervalIndex = arr.findIndex(([iStart, iEnd]: number[]) =>
-    isOverlapIntervals([iStart, iEnd], [start, end])
-  );
-
-  return overlappingIntervalIndex > -1 ? overlappingIntervalIndex : null;
-}
-
-function isOverlapIntervals(
+export function intervalOverlap(
   [start1, end1]: [number, number],
   [start2, end2]: [number, number]
 ): boolean {
-  const oneFirstOverlap = end1 >= start2 && start1 <= start2;
-  const twoFirstOverlap = end2 >= start1 && start2 <= start1;
-  const twoContainsOne = start2 <= start1 && end2 >= end1;
-  const oneContainsTwo = start1 <= start2 && end1 >= end2;
-
-//   console.log(
-//     "oneFirstOverlap",
-//     oneFirstOverlap,
-//     "twoFirstOverlap",
-//     twoFirstOverlap,
-//     "twoContainsOne",
-//     twoContainsOne,
-//     "oneContainsTwo",
-//     oneContainsTwo
-//   );
-
-  return Boolean(
-    oneFirstOverlap || twoFirstOverlap || twoContainsOne || oneContainsTwo
-  );
+  return !(start2 > end1 || end2 < start1) || !(start1 > end2 || end1 < start2);
 }
