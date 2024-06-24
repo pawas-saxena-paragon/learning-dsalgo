@@ -1,0 +1,35 @@
+<mxfile host="app.diagrams.net" modified="2024-06-24T01:48:23.530Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" etag="TClZTbefAHRQLng8dJZ7" version="24.6.2" type="device">
+  <diagram name="Page-1" id="RMnwAlItXdeBD1GaiePH">
+    <mxGraphModel dx="1434" dy="820" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="7Uak84YOvNXQFuZLtNa8-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="7Uak84YOvNXQFuZLtNa8-2" target="7Uak84YOvNXQFuZLtNa8-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="7Uak84YOvNXQFuZLtNa8-9" value="cannot use this coin" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="7Uak84YOvNXQFuZLtNa8-5">
+          <mxGeometry x="-0.2375" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7Uak84YOvNXQFuZLtNa8-2" value="cc(coins, amount)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="50" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="7Uak84YOvNXQFuZLtNa8-3" value="1 + cc(coins, amount - c1)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="7Uak84YOvNXQFuZLtNa8-4" value="cc(coins-c1, amount)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="7Uak84YOvNXQFuZLtNa8-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.608;entryY=-0.05;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="7Uak84YOvNXQFuZLtNa8-2" target="7Uak84YOvNXQFuZLtNa8-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="7Uak84YOvNXQFuZLtNa8-8" value="can use coin" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="7Uak84YOvNXQFuZLtNa8-7">
+          <mxGeometry x="-0.179" y="-2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
