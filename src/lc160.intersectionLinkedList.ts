@@ -1,3 +1,5 @@
+import { ListNode } from "./linkedList.util";
+
 // https://leetcode.com/problems/intersection-of-two-linked-lists/?envType=study-plan-v2&envId=top-100-liked
 function getIntersectionNode(headA: ListNode | null, headB: ListNode | null): ListNode | null {
     const list1Set = new Set();
